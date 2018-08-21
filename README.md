@@ -1,6 +1,8 @@
-# LocateAnything
+# LocateAnything plus
 
-Website URL: http://www.locate-anything.com/
+This new plugin branch https://wordpress.org/plugins/locateanything/
+
+Website URL: http://www.locate-anything.eu/
 
 Requires at least:WordPress 4.0.0
 
@@ -149,5 +151,13 @@ And much much more!
 * optimized loading of styles and scripts
 = 1.1.71 =
 * bug fix
+= 1.1.72 =
+* Sometimes the preview mode was in conflict with 3rd party plugins. This update should fix that problem
+= 1.1.8 =
+Added nice textarea editors
+= 1.1.93 =
+Added radio button, select multiple as filters
+= 1.3.00 =
+* setup a new branch plugin
 
 
