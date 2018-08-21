@@ -1,6 +1,6 @@
-=== LocateAnything - Searchable map Plugin ===
-Contributors: locateanything
-Donate link: http://www.locate-anything.com/
+=== LocateAnything plus - Searchable map Plugin ===
+Contributors: locateanything plus
+Donate link: http://www.locate-anything.eu/
 Tags:   directory plugin,  geodirectory, google maps, , member directory, buddypress directory, wordpress city directory plugin, store locator, filterable map, custom post type filters, custom post type map, map layout
 
 Requires at least: 4.0.0
@@ -45,7 +45,7 @@ And many other features :
 * Marker Clustering
 * Addons for Buddypress, Advanced filters, new marker icons, new map layouts
 
-[check the LocateAnything website](http://www.locate-anything.com/)
+[check the LocateAnything website](http://www.locate-anything.eu/)
 
 
 == Installation ==
@@ -54,7 +54,7 @@ And many other features :
 1. Activate the plugin through the 'Plugins' screen in WordPress
 1. Use the Settings in LocateAnything > Options to configure the plugin
 
-See our website for more informations on how to configure the plugin : http://www.locate-anything.com/documentation
+See our website for more informations on how to configure the plugin : http://www.locate-anything.eu/documentation
 
 
 == Screenshots ==
@@ -90,6 +90,10 @@ See our website for more informations on how to configure the plugin : http://ww
 = 1.1.72 =
 * Sometimes the preview mode was in conflict with 3rd party plugins. This update should fix that problem
 = 1.1.8 =
-Added nice textarea editors
+* Added nice textarea editors
 = 1.1.93 =
-Added radio button, select multiple as filters
+* Added radio button, select multiple as filters
+= 1.3.00 =
+* setup a new branch plugin
+= 1.3.01 =
+* update readme
