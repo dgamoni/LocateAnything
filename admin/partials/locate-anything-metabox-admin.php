@@ -138,10 +138,10 @@ function makeInput($type,$fieldname,$object_id,$default='') {?>
 </tr>
 
 
-<tr id="">
+<!-- <tr id="">
 <td><?php _e("Remove the 'Powered by LocateAnything' label","locate-anything")?></td>
 <td><?php _e(" &nbsp;<a target='_blank' href='http://www.locate-anything.com/addons/license/license-key/'>Get a License Key for only $4.99!</a>","locate-anything")?></td>
-</tr>
+</tr> -->
 
 
 </table>
