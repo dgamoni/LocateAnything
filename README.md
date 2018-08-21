@@ -1,6 +1,6 @@
 # LocateAnything plus
 
-This new plugin branch https://wordpress.org/plugins/locateanything/
+This a new plugin branch https://wordpress.org/plugins/locateanything/
 
 Website URL: http://www.locate-anything.eu/
 
@@ -130,34 +130,59 @@ And much much more!
 == Changelog ==
 
 = 1.0 =
-* First version
+
+ First version
+ 
 = 1.1.0 =
+
 * heavily modified Addon_Helper class
 * css fixes
 * added hide splashscreen option
+
 = 1.1.1 =
+
 * added addon upgrader class
+
 = 1.1.2 =
+
 * added "Powered By" text
+
 = 1.1.4 =
+
 * added KML import function
 * fixed some minor bugs
+
 = 1.1.5 =
+
 * added hooks
 * fixed Google Places selector bug
+
 = 1.1.6 =
+
 * added hooks for compat addons
+
 = 1.1.7 =
+
 * optimized loading of styles and scripts
+
 = 1.1.71 =
+
 * bug fix
+
 = 1.1.72 =
+
 * Sometimes the preview mode was in conflict with 3rd party plugins. This update should fix that problem
+
 = 1.1.8 =
+
 Added nice textarea editors
+
 = 1.1.93 =
+
 Added radio button, select multiple as filters
+
 = 1.3.00 =
+
 * setup a new branch plugin
 
 
