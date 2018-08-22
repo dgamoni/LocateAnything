@@ -45,7 +45,15 @@ else  $post_params=Locate_Anything_Admin::getPostMetas($object->ID);
 				<br><br><?php _e("Latitude","locate-anything")?> <input type="text" name="locate-anything-lat" value="<?php echo   $post_params['locate-anything-lat'];?>">
 				<?php _e("Longitude","locate-anything")?> <input type="text" name="locate-anything-lon" value="<?php echo    $post_params['locate-anything-lon'];?>">
 				
-						
+				<!-- add marker from map -->
+					<div id="map-marker" data-mode="" style="height:300px;margin: 15px 0;">
+					    <input type="hidden" data-map-markers="" value="" name="map-geojson-data" />
+					</div>
+					<div>
+					    <input class="get-markers button-admin" type="button" value="Get the Marker" />
+					</div>
+				<!-- end -->
+
 			</div>
 							
 			      
@@ -173,4 +181,171 @@ jQuery(document).ready(function(){
 function locate_anything_select_preset(e){
   if(confirm("<?php _e('Do you want to overwrite the current tooltip template?','locate-anything')?>"))jQuery("#marker-html-template").val(jQuery('#locate-anything-tooltip-preset :selected').attr("data-template"));
 }
-</script>       
+</script>   
+
+<script>
+// add marker on map
+jQuery(document).ready(function($){
+
+  // We’ll add a OSM tile layer to our map
+  var osmUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      osm = L.tileLayer(osmUrl, {
+          maxZoom: 18,
+          attribution: osmAttrib
+      });
+
+
+  // initialize the map on the "map" div with a given center and zoom
+  var map = L.map('map-marker').setView([49.68185, 30.57495], 5).addLayer(osm);
+
+  
+  //console.log($("input[name='locate-anything-lat']").val() );
+  //console.log($("input[name='locate-anything-lon']").val());
+  
+  //init marker
+  if( $("input[name='locate-anything-lat']").val() || $("input[name='locate-anything-lon']").val() ) {
+  	initMarker();
+  }
+
+  // attaching function on map click
+  map.on('click', onMapClick);
+
+	function initMarker() {
+				
+			  var input_lat = $("input[name='locate-anything-lat']").val();
+			  var input_lon = $("input[name='locate-anything-lon']").val();
+
+			  var geojsonFeature = {
+		          "type": "Feature",
+		              "properties": {},
+		              "geometry": {
+		                  "type": "Point",
+		                  "coordinates": [input_lat, input_lon]
+		          }
+		      }
+
+		      var marker;
+
+		      L.geoJson(geojsonFeature, {
+		          
+		          pointToLayer: function(feature, latlng){
+		              
+		              marker = L.marker([input_lat, input_lon], {
+		                  
+		                  title: "Resource Location",
+		                  alt: "Resource Location",
+		                  riseOnHover: true,
+		                  draggable: true,
+
+		              }).bindPopup("<input type='button' value='Delete this marker' class='marker-delete-button'/>");
+
+		              marker.on("popupopen", onPopupOpen);
+		         
+		              return marker;
+		          }
+		      }).addTo(map);
+
+	}
+
+  // Script for adding marker on map click
+  function onMapClick(e) {
+
+      var allMarkersObjArray = [];//new Array();
+      var allMarkersGeoJsonArray = [];//new Array();
+
+  	$.each(map._layers, function (ml) {
+          //console.log(map._layers)
+          if (map._layers[ml].feature) {
+              
+              allMarkersObjArray.push(this)
+                                      allMarkersGeoJsonArray.push(JSON.stringify(this.toGeoJSON()))
+          }
+    });
+    //console.log(allMarkersGeoJsonArray.length);
+
+	if(allMarkersGeoJsonArray.length == 0) {
+
+      var geojsonFeature = {
+          "type": "Feature",
+              "properties": {},
+              "geometry": {
+                  "type": "Point",
+                  "coordinates": [e.latlng.lat, e.latlng.lng]
+          }
+      }
+
+      var marker;
+
+      L.geoJson(geojsonFeature, {
+          
+          pointToLayer: function(feature, latlng){
+              
+              marker = L.marker(e.latlng, {
+                  
+                  title: "Resource Location",
+                  alt: "Resource Location",
+                  riseOnHover: true,
+                  draggable: true,
+
+              }).bindPopup("<input type='button' value='Delete this marker' class='marker-delete-button'/>");
+
+              marker.on("popupopen", onPopupOpen);
+         
+              return marker;
+          }
+      }).addTo(map);
+
+    }//end if
+
+  }
+
+
+  // Function to handle delete as well as other events on marker popup open
+  function onPopupOpen() {
+
+      var tempMarker = this;
+
+      //var tempMarkerGeoJSON = this.toGeoJSON();
+
+      //var lID = tempMarker._leaflet_id; // Getting Leaflet ID of this marker
+
+      // To remove marker on click of delete
+      $(".marker-delete-button:visible").click(function () {
+          map.removeLayer(tempMarker);
+      });
+  }
+
+
+  // getting all the markers at once
+  function getAllMarkers() {
+      
+      var allMarkersObjArray = [];//new Array();
+      var allMarkersGeoJsonArray = [];//new Array();
+
+      $.each(map._layers, function (ml) {
+          //console.log(map._layers)
+          if (map._layers[ml].feature) {
+              
+              allMarkersObjArray.push(this)
+                                      allMarkersGeoJsonArray.push(JSON.stringify(this.toGeoJSON()))
+          }
+      })
+
+      console.log(allMarkersObjArray);
+      //alert("total Markers : " + allMarkersGeoJsonArray.length + "\n\n" + allMarkersGeoJsonArray + "\n\n Also see your console for object view of this array" );
+  	
+  	if(allMarkersGeoJsonArray.length>0){
+		$(this).parent().parent().find("input[name='locate-anything-lat']").val( allMarkersObjArray[0]['_latlng']['lat'] );
+		$(this).parent().parent().find("input[name='locate-anything-lon']").val( allMarkersObjArray[0]['_latlng']['lng'] );
+  	}
+
+
+
+
+  }
+
+  $(".get-markers").on("click", getAllMarkers);
+
+}); 
+</script>    
