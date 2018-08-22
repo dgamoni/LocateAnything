@@ -86,7 +86,7 @@ class Locate_Anything
     public function load_default_assets() {
         
         /* Load default layouts */
-        $layouts = array((object)array("url" => plugin_dir_path(dirname(__FILE__)) . '/assets/mapTemplates/template2.php', "name" => 'Default Layout 1'), (object)array("url" => plugin_dir_path(dirname(__FILE__)) . '/assets/mapTemplates/template4.php', "name" => 'Default Layout 2'),);
+        $layouts = array((object)array("url" => plugin_dir_path(dirname(__FILE__)) . '/assets/mapTemplates/template2.php', "name" => 'Default Layout left'), (object)array("url" => plugin_dir_path(dirname(__FILE__)) . '/assets/mapTemplates/template4.php', "name" => 'Default Layout right'), (object)array("url" => plugin_dir_path(dirname(__FILE__)) . '/assets/mapTemplates/template9.php', "name" => 'Default Layout popup'),);
         Locate_Anything_Addon_Helper::add_map_layouts("basic", $layouts);
         
         /* Load default marker icons */
