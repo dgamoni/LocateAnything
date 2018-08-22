@@ -481,17 +481,25 @@ class Locate_Anything_Public {
 				$taxonomy = get_taxonomy ( $filter );
 				if(!$taxonomy) continue;
 				$selector= get_post_meta ( $map_id, 'locate-anything-display-filter-' . $filter, true );
+				$filter_selector_label = get_post_meta ( $map_id, 'locate-anything-filter-selector-label-' . $filter, true );
+				//var_dump($filter_selector_label);
+				if($filter_selector_label){
+					$customlabel = $filter_selector_label;
+				} else {
+					$customlabel = $taxonomy->labels->name;
+				}
+
 				if ($taxonomy && $selector == "tokenize") {
-					$r .= '<li class="filter-tokenize"><label>' . $taxonomy->labels->name . '</label>' . Locate_Anything_Tools::getSelectForTaxonomy ( $filter, $filter."-$map_id", true,9999,$allowed ) . '</li>';
+					$r .= '<li class="filter-tokenize"><label>' . $customlabel . '</label>' . Locate_Anything_Tools::getSelectForTaxonomy ( $filter, $filter."-$map_id", true,9999,$allowed ) . '</li>';
 				} elseif ($taxonomy &&  $selector== "select") {
-					$r .= '<li class="filter-select"><label>' . $taxonomy->labels->name . '</label>' . Locate_Anything_Tools::getSelectForTaxonomy ( $filter, $filter."-$map_id", false,9999,$allowed ) . '</li>';
+					$r .= '<li class="filter-select"><label>' . $customlabel . '</label>' . Locate_Anything_Tools::getSelectForTaxonomy ( $filter, $filter."-$map_id", false,9999,$allowed ) . '</li>';
 				} elseif ($selector== "range") {
-					$r .= '<li class="filter-range"><label>' . $taxonomy->labels->name . '</label>
+					$r .= '<li class="filter-range"><label>' . $customlabel . '</label>
 					<div id="rangedval-'.$filter.'-'.$map_id.'"><span id="rangeval-'.$filter.'-'.$map_id.'"></span></div>  
   					<div class="rangeslider" min="'.get_post_meta ( $map_id, "locate-anything-min-range-$filter", true ).'" max="'.get_post_meta ( $map_id, "locate-anything-max-range-$filter", true ).'" name="'.$filter.'-'.$map_id.'"  id="'.$filter.'-'.$map_id.'"></div></li>';
 				
 				} else {
-					$r .= '<li class="filter-checkbox"><label>' . $taxonomy->labels->name . '</label>' . Locate_Anything_Tools::getCheckboxesForTaxonomy ( $filter, $filter."-$map_id" ,$allowed) . '</li>';
+					$r .= '<li class="filter-checkbox"><label>' . $customlabel . '</label>' . Locate_Anything_Tools::getCheckboxesForTaxonomy ( $filter, $filter."-$map_id" ,$allowed) . '</li>';
 				}
 			}
 		$r=apply_filters("locate_anything_add_custom_filters",$r,$map_id,$filters);

@@ -435,6 +435,10 @@ function locate_anything_refresh_filters(){
 			          	if(is_array($the_filters))foreach($the_filters as $filter){
 			          		 $r=get_post_meta( $object->ID,"locate-anything-display-filter-".$filter,true);
 			          		 if(!empty($r)) $jsObj.= "'$filter':'$r',";
+			          		 $r_label=get_post_meta( $object->ID,"locate-anything-filter-selector-label-".$filter,true);
+			          		 if(!empty(r_label)) $jsObj.= "'filter_label-$filter':'$r_label',";
+
+
 			          		 $m=get_post_meta( $object->ID,"locate-anything-min-range-".$filter,true) ;	
 			          		 $M=get_post_meta( $object->ID,"locate-anything-max-range-".$filter,true);	
 			          		 if(!empty($m)) {
@@ -463,7 +467,13 @@ function locate_anything_refresh_filters(){
 			          			if(display_filters[item]=="radio")  isRadio="selected";else if(display_filters[item]=="checkbox")  isCheckbox="selected";else if(display_filters[item]=="select")  isSelect="selected";else if(display_filters[item]=="selectmultiple")  isSelectM="selected"; else if(display_filters[item]=="tokenize") isTokenize="selected";else if(display_filters[item]=="range") isRange="selected";
 
 			          			if(isCheckedShow.length==0) var displaynone="display:none;";else var displaynone="";
+			          			if(display_filters["filter_label-"+item]) {
+			          				var filter_label = display_filters["filter_label-"+item];
+			          			} else {
+			          				var filter_label = '';
+			          			}
 			          			jQuery("#show-filters").append('<div style="'+displaynone+'" class="hide-if-'+item+' filter-selector-'+item+'"><b> Selector </b> : <select class="locate-anything-display-filter-" id="locate-anything-display-filter-'+item+'" item="'+item+'" name="locate-anything-display-filter-'+item+'"><option '+isRadio+' value="radio">Radio buttons</option><option '+isCheckbox+' value="checkbox">Checkboxes</option><option '+isSelect+' value="select">Dropdown</option><option '+isSelectM+' value="selectmultiple">Select Multiple</option><option '+isTokenize+' value="tokenize">Tokenize</option><option '+isRange+' value="range">Range</option></select></div>');
+			          			jQuery("#show-filters").append('<div style="'+displaynone+'" class="hide-if-'+item+' filter-selector-label-'+item+'"><b> Custom label </b> : <input type="text" size="20" id="locate-anything-filter-selector-label-'+item+'" name="locate-anything-filter-selector-label-'+item+'" value="'+filter_label+'"></div>');
 			          			/* adding range options */
 			          			var rangeOptionsVisible;
 			          			if(isRange) rangeOptionsVisible='';else rangeOptionsVisible='style="display:none"';
