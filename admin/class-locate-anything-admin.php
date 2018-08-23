@@ -353,8 +353,11 @@ class Locate_Anything_Admin
 				$enable_icon = get_post_meta( $post_id, 'locate-anything-filter-selector-icon-'.$value, true );
 				$locateanything_custom_field_for_tax_elment[$value] = $enable_icon;
 			}
-
-			$result = array_merge($locateanything_custom_field_for_tax, $locateanything_custom_field_for_tax_elment);
+			if($locateanything_custom_field_for_tax){
+				$result = array_merge($locateanything_custom_field_for_tax, $locateanything_custom_field_for_tax_elment);
+			} else {
+				$result = $locateanything_custom_field_for_tax_elment;
+			}
 			update_option('locateanything_custom_field_for_tax', $result);
 		}
 
