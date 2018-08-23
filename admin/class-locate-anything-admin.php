@@ -60,6 +60,7 @@ class Locate_Anything_Admin
 		$this->version = $version;		
 	}
 
+
 	/**
 	 * Savezs WP root path for use in preview file
 	 * 
@@ -343,6 +344,20 @@ class Locate_Anything_Admin
 		foreach ($_POST as $meta_key => $new_meta_value) {
 			if (strpos($meta_key, "locate-anything") !== false) Locate_Anything_Admin::add_update_metas($post_id, $meta_key, $new_meta_value);
 		}
+
+		if (isset($_POST['locate-anything-filters'])){
+			$locate_anything_filters = $_POST['locate-anything-filters'];
+			$locateanything_custom_field_for_tax_elment = array();
+			$locateanything_custom_field_for_tax = get_option('locateanything_custom_field_for_tax');
+			foreach ($locate_anything_filters as $key => $value) {
+				$enable_icon = get_post_meta( $post_id, 'locate-anything-filter-selector-icon-'.$value, true );
+				$locateanything_custom_field_for_tax_elment[$value] = $enable_icon;
+			}
+
+			$result = array_merge($locateanything_custom_field_for_tax, $locateanything_custom_field_for_tax_elment);
+			update_option('locateanything_custom_field_for_tax', $result);
+		}
+
 		return $post_id;
 	}
 	/**
@@ -724,6 +739,5 @@ class Locate_Anything_Admin
 		echo apply_filters("locate_anything_add_filter_choice", '', $_POST["map_id"], $_POST["type"]);
 		die();
 	}
-
 
 }
