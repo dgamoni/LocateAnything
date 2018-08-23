@@ -1,4 +1,4 @@
-<!-- HTML -->
+<!-- HTML  template default layout popup -->
 <div id="locate-anything-template-wrapper">
 <div id="bloc1">
 [filters]
@@ -34,8 +34,8 @@
 
 /** MAP CONTAINER */
 .leaflet-container {    
-    height: 1000px !important;
-    float: left;
+    /* height: 1000px !important;*/
+    /*float: left;*/
     width: 100%;
 }
 

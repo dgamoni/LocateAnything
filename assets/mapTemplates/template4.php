@@ -1,4 +1,4 @@
-<!-- HTML -->
+<!-- HTML template default layout right -->
 <div id="locate-anything-template-wrapper">
 <div id="bloc1">
 [filters]
