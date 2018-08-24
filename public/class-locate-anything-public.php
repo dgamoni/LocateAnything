@@ -482,7 +482,7 @@ class Locate_Anything_Public {
 				if(!$taxonomy) continue;
 				$selector= get_post_meta ( $map_id, 'locate-anything-display-filter-' . $filter, true );
 				$filter_selector_label = get_post_meta ( $map_id, 'locate-anything-filter-selector-label-' . $filter, true );
-				//var_dump($filter_selector_label);
+				$filter_selector_icon = get_post_meta ( $map_id, 'locate-anything-filter-selector-icon-' . $filter, true );
 				if($filter_selector_label){
 					$customlabel = $filter_selector_label;
 				} else {
@@ -499,7 +499,7 @@ class Locate_Anything_Public {
   					<div class="rangeslider" min="'.get_post_meta ( $map_id, "locate-anything-min-range-$filter", true ).'" max="'.get_post_meta ( $map_id, "locate-anything-max-range-$filter", true ).'" name="'.$filter.'-'.$map_id.'"  id="'.$filter.'-'.$map_id.'"></div></li>';
 				
 				} else {
-					$r .= '<li class="filter-checkbox"><label>' . $customlabel . '</label>' . Locate_Anything_Tools::getCheckboxesForTaxonomy ( $filter, $filter."-$map_id" ,$allowed) . '</li>';
+					$r .= '<li class="filter-checkbox"><label>' . $customlabel . '</label>' . Locate_Anything_Tools::getCheckboxesForTaxonomy ( $filter, $filter."-$map_id" ,$allowed, $filter_selector_icon) . '</li>';
 				}
 			}
 		$r=apply_filters("locate_anything_add_custom_filters",$r,$map_id,$filters);

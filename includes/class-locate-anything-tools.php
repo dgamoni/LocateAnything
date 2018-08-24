@@ -77,7 +77,7 @@ public static function getSelectForType($type,$name,$tokenize=true,$maxElement=9
 		
 	}
 }
-public static function getCheckboxesForTaxonomy($taxonomy,$name,$allowed) {	
+public static function getCheckboxesForTaxonomy($taxonomy,$name,$allowed,$icon) {	
 	$terms=get_terms($taxonomy , array(
  	'orderby'    => 'slug',
  	'hide_empty' => 0, 	
@@ -86,7 +86,15 @@ public static function getCheckboxesForTaxonomy($taxonomy,$name,$allowed) {
 	if($terms){		
 		$li=array();
 		foreach($terms as $k=>$term){
-			$str='<div class="LA_filters_checkbox"><input type="checkbox"  id="'.$name.'" name="'.$name.'[]" value="'.$term->term_id.'" checked><label for="'.$name.'"></label>'.$term->name.'</div>';
+			if ( $icon == "true"){
+				$term_image_url = get_term_meta( $term->term_id , 'locateanything_term_image_url', true );
+				$term_image = '<div class="slug-'.$term->slug.' filter_term_image" style="background-image: url('.$term_image_url.')"></div>';
+				$term_image_class = 'filters_image';
+			} else {
+				$term_image = '';
+				$term_image_class = '';
+			}
+			$str='<div class="LA_filters_checkbox '.$term_image_class.'"><input class="filter_term_checkbox" type="checkbox"  id="'.$name.'" name="'.$name.'[]" value="'.$term->term_id.'" checked>'.$term_image.'<label for="'.$name.'"></label><span class="filter_term_name">'.$term->name.'</span></div>';
 			$li[]=$str;
 		}
 		if(count($li)) return implode("",$li);
