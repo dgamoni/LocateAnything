@@ -96,7 +96,8 @@ class Locate_Anything_Admin
 	 * @access   private
 	 */
 	public function add_mime_types($mime_types){
-	    $mime_types['kml'] = 'application/vnd.google-earth.kml+xml'; //Adding kml extension       
+	    $mime_types['kml'] = 'application/vnd.google-earth.kml+xml'; //Adding kml extension   
+	    $mime_types['svg'] = 'image/svg+xml';    
 	    return $mime_types;
 	}
 
