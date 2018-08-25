@@ -565,6 +565,7 @@ class Locate_Anything_Public {
 				"content" ,
 				"content_stripped",
 				"excerpt"  ,
+				"post_excerpt"  ,
 				"small_thumbnail" ,
 				"medium_thumbnail",
 				"full_thumbnail",
@@ -942,7 +943,8 @@ public static function defineDefaultMarker($params){
 						$add["author_avatar"]= get_avatar($post->post_author);	
 						$add["content"] =$marker_content;
 						$add["content_stripped"]=  $stripped_content;
-						$add["excerpt"]= sanitize_text_field ( $post_params["post_excerpt"] );
+						$add["post_excerpt"]= sanitize_text_field ( $post_params["post_excerpt"] );
+						$add["excerpt"]= sanitize_text_field ( $post_params["excerpt"] );
 						$add["small_thumbnail"]=$small_thumbnail;
 						$add["medium_thumbnail"]= get_the_post_thumbnail ( $id, 'post-thumbnail' );
 						$add["full_thumbnail"] =get_the_post_thumbnail ( $id, 'full' );
