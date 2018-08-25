@@ -207,6 +207,7 @@ var leaflet_filters_class= function (params){
 		/* Stores the marker in markers array */
 		this.markers.push(marker);	
 		this.filtered_markers.push(marker);
+		this.update_markers(); // dgamoni applay status filter
 		return marker;
 	};
 

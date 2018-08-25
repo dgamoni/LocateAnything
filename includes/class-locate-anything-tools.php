@@ -95,7 +95,9 @@ public static function getCheckboxesForTaxonomy($taxonomy,$name,$allowed,$icon) 
 				$term_image = '';
 				$term_image_class = '';
 			}
-			$str='<div class="LA_filters_checkbox '.$term_image_class.'"><input class="filter_term_checkbox" type="checkbox"  id="'.$name.'" name="'.$name.'[]" value="'.$term->term_id.'" checked>'.$term_image.'<label for="'.$name.'"></label><span class="filter_term_name">'.$term->name.'</span></div>';
+			$locateanything_checkbox_status = get_term_meta( $term->term_id , 'locateanything_checkbox_status', true );
+			if ($locateanything_checkbox_status == 'unchecked' ) { $status = ''; } else { $status = 'checked'; }
+			$str='<div class="LA_filters_checkbox '.$term_image_class.'"><input class="filter_term_checkbox" type="checkbox"  id="'.$name.'" name="'.$name.'[]" value="'.$term->term_id.'" '.$status.'>'.$term_image.'<label for="'.$name.'"></label><span class="filter_term_name">'.$term->name.'</span></div>';
 			$li[]=$str;
 		}
 		if(count($li)) return implode("",$li);

@@ -350,9 +350,22 @@ class Locate_Anything_Admin
 			$locate_anything_filters = $_POST['locate-anything-filters'];
 			$locateanything_custom_field_for_tax_elment = array();
 			$locateanything_custom_field_for_tax = get_option('locateanything_custom_field_for_tax');
+			
+			//status checkbox
+			$locateanything_custom_field_for_tax_elment_checkbox = array(); 
+			$locateanything_custom_field_for_tax_checkbox = get_option('locateanything_custom_field_for_tax_checkbox');
+			//end status checkbox
 			foreach ($locate_anything_filters as $key => $value) {
 				$enable_icon = get_post_meta( $post_id, 'locate-anything-filter-selector-icon-'.$value, true );
 				$locateanything_custom_field_for_tax_elment[$value] = $enable_icon;
+				
+				//status checkbox
+				$status = get_post_meta( $post_id, 'locate-anything-display-filter-'.$value, true );
+				if($status == 'checkbox') {
+					$locateanything_custom_field_for_tax_elment_checkbox[$value] = 'checkbox';
+				} else {
+					$locateanything_custom_field_for_tax_elment_checkbox[$value] = $status;
+				} //end status checkbox
 			}
 			if($locateanything_custom_field_for_tax){
 				$result = array_merge($locateanything_custom_field_for_tax, $locateanything_custom_field_for_tax_elment);
@@ -360,6 +373,16 @@ class Locate_Anything_Admin
 				$result = $locateanything_custom_field_for_tax_elment;
 			}
 			update_option('locateanything_custom_field_for_tax', $result);
+			
+			//status checkbox
+			if($locateanything_custom_field_for_tax_checkbox){
+				$result_ = array_merge($locateanything_custom_field_for_tax_checkbox, $locateanything_custom_field_for_tax_elment_checkbox);
+			} else {
+				$result_ = $locateanything_custom_field_for_tax_elment_checkbox;
+			}
+			update_option('locateanything_custom_field_for_tax_checkbox', $result_);
+			//end status checkbox
+
 		}
 
 		return $post_id;

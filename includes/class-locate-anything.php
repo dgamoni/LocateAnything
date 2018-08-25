@@ -81,82 +81,6 @@ class Locate_Anything
         $this->load_custom_term_field();
     }
 
-    public function load_custom_term_field() {
-        $locateanything_custom_field_for_tax = get_option('locateanything_custom_field_for_tax');
-        if ($locateanything_custom_field_for_tax) {
-            foreach ($locateanything_custom_field_for_tax as $key => $value) {
-                if( $value == 'true' ) {
-                    // $taxname = 'cat_place';
-                    $taxname = $key;
-                    //Поля при добавлении элемента таксономии
-                    add_action("{$taxname}_add_form_fields", array( $this, 'add_new_custom_fields' ) );
-                    //Поля при редактировании элемента таксономии
-                    add_action("{$taxname}_edit_form_fields", array( $this, 'edit_new_custom_fields') );
-
-                    //Сохранение при добавлении элемента таксономии
-                    add_action("create_{$taxname}", array( $this, 'save_custom_taxonomy_meta') );
-                    //Сохранение при редактировании элемента таксономии
-                    add_action("edited_{$taxname}", array( $this, 'save_custom_taxonomy_meta') );
-                }
-            }
-        }
-
-    }
-
-
-    public function edit_new_custom_fields( $term ) {
-        ?>
-            <tr class="form-field">
-                <th scope="row" valign="top"><label>Image url</label></th>
-                <td>
-                    <input type="text" name="extra[locateanything_term_image_url]" value="<?php echo esc_attr( get_term_meta( $term->term_id, 'locateanything_term_image_url', 1 ) ) ?>"><br />
-                    <span class="description">Image url for filter LocateAnything</span>
-                </td>
-            </tr>
-        <?php
-    }
-
-    public function add_new_custom_fields( $taxonomy_slug ){
-        ?>
-        <div class="form-field">
-            <label for="tag-locateanything_term_image_url">Image url</label>
-            <input name="extra[locateanything_term_image_url]" id="tag-locateanything_term_image_url" type="text" value="" />
-            <p>Image url for filter LocateAnything</p>
-        </div>
-        <?php
-    }
-
-    public function save_custom_taxonomy_meta( $term_id ) {
-        if ( ! isset($_POST['extra']) ) return;
-        if ( ! current_user_can('edit_term', $term_id) ) return;
-        if (
-            ! wp_verify_nonce( $_POST['_wpnonce'], "update-tag_$term_id" ) && // wp_nonce_field( 'update-tag_' . $tag_ID );
-            ! wp_verify_nonce( $_POST['_wpnonce_add-tag'], "add-tag" ) // wp_nonce_field('add-tag', '_wpnonce_add-tag');
-        ) return;
-
-        // Все ОК! Теперь, нужно сохранить/удалить данные
-        $extra = wp_unslash($_POST['extra']);
-
-        foreach( $extra as $key => $val ){
-            // проверка ключа
-            $_key = sanitize_key( $key );
-            if( $_key !== $key ) wp_die( 'bad key'. esc_html($key) );
-
-            // очистка
-            if( $_key === 'tag_posts_shortcode_links' )
-                $val = sanitize_textarea_field( strip_tags($val) );
-            else
-                $val = sanitize_text_field( $val );
-
-            // сохранение
-            if( ! $val )
-                delete_term_meta( $term_id, $_key );
-            else
-                update_term_meta( $term_id, $_key, $val );
-        }
-
-        return $term_id;
-    }    
     /**
      * Loads the assets of the basic pack
      * @return void
@@ -387,4 +311,148 @@ class Locate_Anything
     public function get_version() {
         return $this->version;
     }
+
+    /**
+     * Loads custom fields for term
+     * @return locateanything_term_image_url
+     * @return locateanything_checkbox_status
+     */
+    public function load_custom_term_field() {
+        $locateanything_custom_field_for_tax = get_option('locateanything_custom_field_for_tax');
+        if ($locateanything_custom_field_for_tax) {
+            foreach ($locateanything_custom_field_for_tax as $key => $value) {
+                if( $value == 'true' ) {
+                    // $taxname = 'cat_place';
+                    $taxname = $key;
+                    //Поля при добавлении элемента таксономии
+                    add_action("{$taxname}_add_form_fields", array( $this, 'add_new_custom_fields' ) );
+                    //Поля при редактировании элемента таксономии
+                    add_action("{$taxname}_edit_form_fields", array( $this, 'edit_new_custom_fields') );
+
+                    //Сохранение при добавлении элемента таксономии
+                    add_action("create_{$taxname}", array( $this, 'save_custom_taxonomy_meta') );
+                    //Сохранение при редактировании элемента таксономии
+                    add_action("edited_{$taxname}", array( $this, 'save_custom_taxonomy_meta') );
+                }
+            }
+        }
+        $locateanything_custom_field_for_tax_checkbox = get_option('locateanything_custom_field_for_tax_checkbox');
+        if ($locateanything_custom_field_for_tax_checkbox) {
+            foreach ($locateanything_custom_field_for_tax_checkbox as $key => $value) {
+                if( $value == 'checkbox' ) {
+                    // $taxname = 'cat_place';
+                    $taxname = $key;
+                    //Поля при добавлении элемента таксономии
+                    add_action("{$taxname}_add_form_fields", array( $this, 'add_new_custom_fields_checkbox' ) );
+                    //Поля при редактировании элемента таксономии
+                    add_action("{$taxname}_edit_form_fields", array( $this, 'edit_new_custom_fields_checkbox') );
+
+                    //Сохранение при добавлении элемента таксономии
+                    add_action("create_{$taxname}", array( $this, 'save_custom_taxonomy_meta') );
+                    //Сохранение при редактировании элемента таксономии
+                    add_action("edited_{$taxname}", array( $this, 'save_custom_taxonomy_meta') );
+                }
+            }
+        }
+    }
+
+    /**
+     * Edit custom fields in term
+     * @return locateanything_term_image_url
+     */
+    public function edit_new_custom_fields( $term ) {
+        ?>
+            <tr class="form-field">
+                <th scope="row" valign="top"><label>Image url</label></th>
+                <td>
+                    <input type="text" name="extra[locateanything_term_image_url]" value="<?php echo esc_attr( get_term_meta( $term->term_id, 'locateanything_term_image_url', 1 ) ) ?>"><br />
+                    <span class="description">Image url for filter LocateAnything</span>
+                </td>
+            </tr>
+        <?php
+    }
+
+    /**
+     * Edit custom fields in term
+     * @return ocateanything_checkbox_status
+     */
+    public function edit_new_custom_fields_checkbox( $term ) {
+        $status = get_term_meta( $term->term_id, 'locateanything_checkbox_status', 1 );
+        ?>
+            <tr class="form-field">
+                <th scope="row" valign="top"><label>Checkbox status</label></th>
+                <td>
+                    <span>checked </span><input type="radio" name="extra[locateanything_checkbox_status]" value="0"  <?php if ( $status != 'unchecked') echo 'checked="checked"'; ?> >
+                    <span> unchecked </span><input type="radio" name="extra[locateanything_checkbox_status]" value="unchecked" <?php if ( $status  == 'unchecked' ) echo 'checked="checked"'; ?> ><br />
+                    <span class="description">Status for checkbox filter</span>
+                </td>
+            </tr>
+        <?php
+    }
+
+    /**
+     * Add new custom fields in term
+     * @return locateanything_term_image_url
+     */
+    public function add_new_custom_fields( $taxonomy_slug ){
+        ?>
+        <div class="form-field">
+            <label for="tag-locateanything_term_image_url">Image url</label>
+            <input name="extra[locateanything_term_image_url]" id="tag-locateanything_term_image_url" type="text" value="" />
+            <p>Image url for filter LocateAnything</p>
+        </div>
+        <?php
+    }
+
+    /**
+     * Add new custom fields in term
+     * @return locateanything_checkbox_status
+     */
+    public function add_new_custom_fields_checkbox( $taxonomy_slug ){
+        ?>
+        <div class="form-field">
+            <label for="tag-locateanything_checkbox_status">Checkbox status</label>
+                    <span>checked </span><input type="radio" name="extra[locateanything_checkbox_status]" value="0"  >
+                    <span> unchecked </span><input type="radio" name="extra[locateanything_checkbox_status]" value="unchecked" checked="checked" ><br />
+                    <span class="description">Status for checkbox filter</span>
+        </div>
+        <?php
+    }
+
+    /**
+     * Save custom fields in term
+     * @return extra[]
+     */
+    public function save_custom_taxonomy_meta( $term_id ) {
+        if ( ! isset($_POST['extra']) ) return;
+        if ( ! current_user_can('edit_term', $term_id) ) return;
+        if (
+            ! wp_verify_nonce( $_POST['_wpnonce'], "update-tag_$term_id" ) && // wp_nonce_field( 'update-tag_' . $tag_ID );
+            ! wp_verify_nonce( $_POST['_wpnonce_add-tag'], "add-tag" ) // wp_nonce_field('add-tag', '_wpnonce_add-tag');
+        ) return;
+
+        // Все ОК! Теперь, нужно сохранить/удалить данные
+        $extra = wp_unslash($_POST['extra']);
+
+        foreach( $extra as $key => $val ){
+            // проверка ключа
+            $_key = sanitize_key( $key );
+            if( $_key !== $key ) wp_die( 'bad key'. esc_html($key) );
+
+            // очистка
+            if( $_key === 'tag_posts_shortcode_links' )
+                $val = sanitize_textarea_field( strip_tags($val) );
+            else
+                $val = sanitize_text_field( $val );
+
+            // сохранение
+            if( ! $val )
+                delete_term_meta( $term_id, $_key );
+            else
+                update_term_meta( $term_id, $_key, $val );
+        }
+
+        return $term_id;
+    } 
+
 }
