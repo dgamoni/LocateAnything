@@ -569,7 +569,11 @@ class Locate_Anything_Public {
 				"small_thumbnail" ,
 				"medium_thumbnail",
 				"full_thumbnail",
-				"author_name"	
+				"author_name",
+				"post_id",
+				"lat",
+				"lon",
+				"dms"
 		);
 		/* Apply locate_anything_basic_markup hook */	
 		if(!$post_type) $post_type = 'all';	
@@ -948,6 +952,22 @@ public static function defineDefaultMarker($params){
 						$add["small_thumbnail"]=$small_thumbnail;
 						$add["medium_thumbnail"]= get_the_post_thumbnail ( $id, 'post-thumbnail' );
 						$add["full_thumbnail"] =get_the_post_thumbnail ( $id, 'full' );
+						$add["post_id"] = $id;
+						if( get_post_meta( $id, 'locate-anything-lat')[0] ) {
+							$add["lat"] = get_post_meta($id, 'locate-anything-lat')[0];
+						} else {
+							$add["lat"] = '';
+						}
+						if( get_post_meta( $id, 'locate-anything-lon')[0] ) {
+							$add["lon"] = get_post_meta($id, 'locate-anything-lon')[0];
+						} else {
+							$add["lon"] = '';
+						}
+						if ( $add["lat"] && $add["lon"]){
+							$add["dms"] =  Locate_Anything_Public::tag_addon_DECtoDMS( $add["lat"], $add["lon"] );
+						} else {
+							$add["dms"] = '';
+						}
 				}
 
 				/* Add custom marker infos */
@@ -1031,5 +1051,42 @@ public static function defineDefaultMarker($params){
 			die ();
 		}
 		
+	}
+
+	/**
+	 * tooltip tag addon
+	 * pass in the latitude,longitude in DMS values and returns the converted DMS string.
+	 * https://stackoverflow.com/questions/7927475/php-format-latitude-and-longitude-with-degrees-minuets-and-seconds
+	 * @param  $latitude, $longitude
+	 * @return 50° 6.578 N 29° 29.539 E
+	 */
+	public function tag_addon_DECtoDMS($latitude, $longitude) {
+	    $latitudeDirection = $latitude < 0 ? 'S': 'N';
+	    $longitudeDirection = $longitude < 0 ? 'W': 'E';
+
+	    $latitudeNotation = $latitude < 0 ? '-': '';
+	    $longitudeNotation = $longitude < 0 ? '-': '';
+
+	    $latitudeInDegrees = floor(abs($latitude));
+	    $longitudeInDegrees = floor(abs($longitude));
+
+	    $latitudeDecimal = abs($latitude)-$latitudeInDegrees;
+	    $longitudeDecimal = abs($longitude)-$longitudeInDegrees;
+
+	    $_precision = 3;
+	    $latitudeMinutes = round($latitudeDecimal*60,$_precision);
+	    $longitudeMinutes = round($longitudeDecimal*60,$_precision);
+
+	    return sprintf('%s%s° %s %s %s%s° %s %s',
+	        $latitudeNotation,
+	        $latitudeInDegrees,
+	        $latitudeMinutes,
+	        $latitudeDirection,
+	        $longitudeNotation,
+	        $longitudeInDegrees,
+	        $longitudeMinutes,
+	        $longitudeDirection
+	    );
+
 	}
 }

@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Plugin Name:       LocateAnything plus
  * Plugin URI:        http://www.locate-anything.eu
  * Description:       LocateAnything is a versatile and highly customizable Wordpress plugin aimed at creating nice searchable/filterable maps.  Easily let your users search your maps by tags, custom taxonomies,xprofile fields(with the BuddyPress addon) and much more...
- * Version:           1.3.12
+ * Version:           1.3.13
  * Last Modified : 	  2018-08-21
  * Author:            Andrii Monin
  * Author URI:        http://www.bigcatcode.com
