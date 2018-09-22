@@ -92,7 +92,15 @@
 <li><?php _e("Cache timeout (minutes)","locate-anything")?> <input type="text" name="locate-anything-option-cache-timeout" value="<?php echo unserialize(get_option("locate-anything-option-cache-timeout"));?>"></li>
 <li> <?php _e("Enable cache","locate-anything")?> : <input type="radio" name="locate-anything-option-enable-cache" value="1" <?php if (unserialize(get_option("locate-anything-option-enable-cache"))==1) echo "checked";?> > <?php _e("yes","locate-anything")?> <input type="radio" <?php if (unserialize(get_option("locate-anything-option-enable-cache"))==0) echo "checked";?> name="locate-anything-option-enable-cache" value="0" > <?php _e("no","locate-anything")?>  </li>
 
-</ul></div>
+</ul>
+
+<h2><?php _e("Global map settings","locate-anything")?></h2>
+<ul>
+<li><?php _e("Max Cluster Radius","locate-anything")?> <input type="text" name="locate-anything-option-maxclusterradius" value="<?php echo unserialize(get_option("locate-anything-option-maxclusterradius"));?>">
+<label><?php _e("A cluster will cover at most this many pixels from its center, default 80","locate-anything")?></label>
+</li>
+</ul>
+</div>
 
 <?php echo apply_filters("locate_anything_add_option_pane","")?>
 <div style="text-align: right"><input type="submit" class='button-admin' style=""></div>

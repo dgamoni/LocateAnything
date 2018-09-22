@@ -99,7 +99,7 @@ class Locate_Anything_Public {
 				$this->plugin_name . "-leaflet" 
 		), $this->version, false );
 		// leaflet markerCluster JS
-		wp_enqueue_script ( $this->plugin_name . "-leaflet-marker-cluster", plugin_dir_url ( __FILE__ ) . 'js/leaflet.markercluster/leaflet.markercluster.js', array (
+		wp_enqueue_script ( $this->plugin_name . "-leaflet-marker-cluster", plugin_dir_url ( __FILE__ ) . 'js/leaflet.markercluster/leaflet.markercluster-src-min.js', array (
 				'jquery' 
 		), $this->version, false );
 		// Tokenize JS
@@ -122,6 +122,10 @@ class Locate_Anything_Public {
 		wp_enqueue_script ( $this->plugin_name . "-omnivorejs", plugin_dir_url ( __FILE__ ) . 'js/leaflet-omnivore/leaflet-omnivore.min.js', array (
 				$this->plugin_name . "-leaflet-filters" 
 		), $this->version, false );
+		wp_localize_script( $this->plugin_name . "-leaflet-marker-cluster", 'ClusterOptions', array(
+			'maxClusterRadius' =>  unserialize(get_option("locate-anything-option-maxclusterradius")),
+			//,'a_value' => '10'
+		));
 	}
 	
 
