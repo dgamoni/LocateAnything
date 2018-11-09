@@ -177,7 +177,7 @@ class Locate_Anything_Public {
 	 */
 	public static function outputMapMarkup($atts, $content) {
 		if(!isset($atts["map_id"])) return;	
-
+		if(is_admin()) return;
 
 		$plugin_public = new Locate_Anything_Public(null, null);      
     	$plugin_public->enqueue_scripts();
