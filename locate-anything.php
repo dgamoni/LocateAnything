@@ -24,6 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       locate-anything
  * Domain Path:       /languages
+ * GitHub Plugin URI: https://github.com/dgamoni/LocateAnything
  */
 
 // If this file is called directly, abort.
