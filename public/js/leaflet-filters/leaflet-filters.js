@@ -265,6 +265,30 @@ var leaflet_filters_class= function (params){
 		} else {
 		var TileProvider=L.tileLayer(this.params["overlay"].url,{attribution : this.params["overlay"].attribution});
 		TileProvider.addTo(this.map);
+
+		//add control layers
+			
+			// for all possible values and explanations see "Template Parameters" in https://msdn.microsoft.com/en-us/library/ff701716.aspx
+	        var imagerySet = "AerialWithLabelsOnDemand"; // AerialWithLabels | Birdseye | BirdseyeWithLabels | Road
+	        if (this.params["load-bing"]){
+	        	 var bing = new L.BingLayer(this.params["bing-key"], {type: imagerySet});
+	        }
+	       
+	        if (this.params["load-yandex"]){
+		        var yndx = new L.Yandex("satellite", { overlay:true});
+				var ytraffic = new L.Yandex("null", {traffic:true, opacity:0.8, overlay:true});
+			}
+
+			if ( this.params["load-bing"] && this.params["load-yandex"] ){
+	        	this.map.addControl(new L.Control.Layers({'OSM - main map':TileProvider, "Bing - satellite":bing, "Yandex - satellite(without markers)":yndx, "Traffic":ytraffic }, {}));
+        	} else if ( this.params["load-bing"] && !this.params["load-yandex"] ){
+        		this.map.addControl(new L.Control.Layers({'OSM - main map':TileProvider, "Bing - satellite":bing }, {}));
+        	} else if ( !this.params["load-bing"] && this.params["load-yandex"] ){
+        		this.map.addControl(new L.Control.Layers({'OSM - main map':TileProvider, "Yandex - satellite(without markers)":yndx, "Traffic":ytraffic }, {}));
+        	} 
+
+        //end control layers
+
 		}
 		/* Adds autogeocoding */
 		if(this.params["autogeocode"]=='1') this.map.locate({setView:true,maxZoom:this.params["initial-zoom"]});

@@ -83,13 +83,41 @@ class Locate_Anything_Public {
 		), $this->version, false );
 		// Google API, localized according to general settings
 		$gmaps_key = Locate_Anything_Admin::getGmapsAPIKey();		
-		wp_enqueue_script ( $this->plugin_name . "-googleAPI", "https://maps.googleapis.com/maps/api/js?v=3.exp&key=".$gmaps_key."&libraries=places&language=" . unserialize ( get_option ( "locate-anything-option-map-language" ) ), array (
-				$this->plugin_name . "-leaflet-filters" 
-		), $this->version, false );
-		// Google Tiles
-		wp_enqueue_script ( $this->plugin_name . "-googleTiles", plugin_dir_url ( __FILE__ ) . 'js/leaflet-plugins-master/layer/tile/Google.js', array (
-				$this->plugin_name . "-leaflet-filters" 
-		), $this->version, false );
+		
+		//load additional js if you want
+		$loadjs = unserialize (get_option ( 'locate-anything-option-loadjs' ));
+		if(!is_array($loadjs)) $loadjs = array ();
+		
+		//google
+		if (array_search ( 'google', $loadjs ) !== false):
+
+			wp_enqueue_script ( $this->plugin_name . "-googleAPI", "https://maps.googleapis.com/maps/api/js?v=3.exp&key=".$gmaps_key."&libraries=places&language=" . unserialize ( get_option ( "locate-anything-option-map-language" ) ), array (
+					$this->plugin_name . "-leaflet-filters" 
+			), $this->version, false );
+			// Google Tiles
+			wp_enqueue_script ( $this->plugin_name . "-googleTiles", plugin_dir_url ( __FILE__ ) . 'js/leaflet-plugins-master/layer/tile/Google.js', array (
+					$this->plugin_name . "-leaflet-filters" 
+			), $this->version, false );
+
+		endif;
+
+		// Yandex Tiles
+		if (array_search ( 'yandex', $loadjs ) !== false):
+			wp_enqueue_script ( $this->plugin_name . "-yandexAPI", "http://api-maps.yandex.ru/2.0/?load=package.map&lang=" . unserialize ( get_option ( "locate-anything-option-map-language" ) ), array (
+					$this->plugin_name . "-leaflet-filters" 
+			), $this->version, false );
+			wp_enqueue_script ( $this->plugin_name . "-yandexTiles", plugin_dir_url ( __FILE__ ) . 'js/leaflet-plugins-master/layer/tile/Yandex.js', array (
+					$this->plugin_name . "-leaflet-filters" 
+			), $this->version, false );
+		endif;
+
+		// Bing Tiles
+		if (array_search ( 'bing', $loadjs ) !== false):
+			wp_enqueue_script ( $this->plugin_name . "-bingTiles", plugin_dir_url ( __FILE__ ) . 'js/leaflet-plugins-master/layer/tile/Bing.js', array (
+					$this->plugin_name . "-leaflet-filters" 
+			), $this->version, false );
+		endif;
+
 		// leaflet JS
 		wp_enqueue_script ( $this->plugin_name . "-leaflet", 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js', array (
 				'jquery' 
@@ -285,9 +313,33 @@ class Locate_Anything_Public {
 		} else {
 			$settings=Locate_Anything_Public::getMapParameters($map_id);
 			$filters = unserialize($settings["locate-anything-show-filters"]);
-		}		
+		}
+		//var_dump($settings);
 		/* create parameter array */
 		$params = array ();
+
+		$params["bing-key"] = Locate_Anything_Admin::getBingAPIKey();
+		$loadjs = unserialize (get_option ( 'locate-anything-option-loadjs' ));
+		if(!is_array($loadjs)) $loadjs = array ();
+		//google
+		if (array_search ( 'google', $loadjs ) !== false){
+			$params["load-google"] = true;
+		} else {
+			$params["load-google"] = false;
+		}
+		//bing
+		if (array_search ( 'bing', $loadjs ) !== false){
+			$params["load-bing"] = true;
+		} else {
+			$params["load-bing"] = false;
+		}
+		//yandex
+		if (array_search ( 'yandex', $loadjs ) !== false){
+			$params["load-yandex"] = true;
+		} else {
+			$params["load-yandex"] = false;
+		}
+
 		/* width & height*/
 		$params ["map-width"]=$settings['locate-anything-map-width'] ;
 		$params ["map-height"]=$settings['locate-anything-map-height'] ;
@@ -375,7 +427,11 @@ class Locate_Anything_Public {
 						"kml_opacity" :  '<?php echo $settings["locate-anything-kml_opacity"]?>',
 						"kml_color" :  '<?php echo $settings["locate-anything-kml_color"]?>',
 						"kml_dashArray" :  '<?php echo $settings["locate-anything-kml_dashArray"]?>',
-						"kml_fillOpacity" :  '<?php echo $settings["locate-anything-kml_fillOpacity"]?>'  
+						"kml_fillOpacity" :  '<?php echo $settings["locate-anything-kml_fillOpacity"]?>',
+						"bing-key"  :	'<?php echo $params["bing-key"]?>',
+						"load-google"	:	'<?php echo $params["load-google"]?>',
+						"load-bing"	:	'<?php echo $params["load-bing"]?>',
+						"load-yandex"	:	'<?php echo $params["load-yandex"]?>'
 					};
 
 						/* define instance name*/

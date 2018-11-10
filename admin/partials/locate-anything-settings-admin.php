@@ -18,7 +18,7 @@
 <h1><?php _e("Default settings","locate-anything")?></h1>
 <h2><?php _e("Map Language","locate-anything")?></h2>
 <table>
-<tr>
+<tr style="display:none;">
 <td><?php _e("Purchase Code");?>:</td>	<td><input type="text" style="max-width:auto" size="55" name="locate-anything-option-license-key" value="<?php echo unserialize(get_option("locate-anything-option-license-key"));?>"><br>
 	<?php //_e(" &nbsp;<a  target='_blank' href='http://www.locate-anything.com/addons/license/license-key/'>Get a License Key for only $4.99!</a> (Removes the 'Powered by LocateAnything' label)","locate-anything")?>
 </td>
@@ -28,7 +28,11 @@
 </tr>
 
 <tr>
-<td><?php _e("Map Language (GoogleMaps only)","locate-anything");?>:</td>
+	<td><?php _e("BingMaps Key (only if you use BingMaps)","locate-anything");?>:</td>	<td><input type="text" name="locate-anything-option-bingmaps-key" value="<?php echo unserialize(get_option("locate-anything-option-bingmaps-key"));?>"></td>
+</tr>
+
+<tr>
+<td><?php _e("Map Language (for GoogleMaps and YandexMaps)","locate-anything");?>:</td>
 <td><select name="locate-anything-option-map-language">
 <?php foreach (Locate_Anything_Tools::getLocaleList() as $locale => $language) {?>
 <option <?php if(unserialize(get_option('locate-anything-option-map-language'))==$locale) echo "selected";?> value="<?php echo  $locale;?>">
@@ -38,6 +42,28 @@
 </select>
  </td>
 </tr></table>
+
+<h2><?php _e("What do you want load JS? and add to Layers Control","locate-anything")?></h2>
+	<ul>
+		<li>
+<select multiple="multiple"	name="locate-anything-option-loadjs[]"	id="locate-anything-option-loadjs">
+<?php
+
+			$loadjs = array('google', 'bing', 'yandex', 'none');
+
+			$selected_items = unserialize (get_option ( 'locate-anything-option-loadjs' ));
+			if(!is_array($selected_items)) $selected_items = array ();
+			foreach ( $loadjs as $loadjs_ ) {
+				echo '<option value="' . $loadjs_ . '"';
+				if (array_search ( $loadjs_, $selected_items ) !== false) echo " selected ";
+				echo '>' . $loadjs_ . '</option>';
+			}
+?>
+</select>
+		</li>
+	</ul>
+
+
 <h2><?php _e("What do you want to localize?","locate-anything")?></h2>
 	<ul>
 		<li>

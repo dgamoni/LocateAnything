@@ -45,6 +45,7 @@ class Locate_Anything_Admin
 	 		 The GoogleMaps key.
 	 */
 	 static $Gmaps_API_key = 'AIzaSyC0lZ7MbGfowxNTZva7fAyeTJ18dAWMUp0';
+	 static $Bing_API_key = 'An5y6EfmR_Tmk0nMXSWFQD7JZ2sc5Zv793InR2eKkVmMpwxfa_XOzlEmIEPXIol9';
 
 	/**
 	 * Initialize the class and set its properties.
@@ -109,6 +110,17 @@ class Locate_Anything_Admin
 	public static function getGmapsAPIKey() {
 		$key = unserialize (get_option("locate-anything-option-googlemaps-key"));
 		if($key===false || empty($key)) $key = Locate_Anything_Admin::$Gmaps_API_key;		
+		return $key;
+	}
+
+	/**
+	 * serves the Bing Key
+	 *
+	 * @since 1.0.0
+	 */
+	public static function getBingAPIKey() {
+		$key = unserialize (get_option("locate-anything-option-bingmaps-key"));
+		if($key===false || empty($key)) $key = Locate_Anything_Admin::$Bing_API_key;
 		return $key;
 	}
 
