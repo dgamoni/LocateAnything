@@ -156,12 +156,13 @@ function initialize_editArea(editor_id,callback,syntax){
               id: editor_id // id of the textarea to transform    
               ,start_highlight: true  // if start with highlight
               ,allow_resize: "no"
-              ,allow_toggle: false
+              ,allow_toggle: true
               ,word_wrap: false
               ,language: "en"
               ,syntax: syntax  
               ,min_height : 400 
-              ,toolbar : 'undo, redo'     
+              ,toolbar : 'undo, redo'
+              ,display : "later"
       };
       if(callback!=='') options.change_callback = callback;
       editAreaLoader.init(options); 
